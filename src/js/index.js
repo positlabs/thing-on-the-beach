@@ -1,3 +1,5 @@
+(function(){
+
 var stageWidth = 1280;
 var stageHeight = 720;
 
@@ -6,48 +8,39 @@ document.body.appendChild(renderer.view);
 
 var stage = new PIXI.Container();
 
-var Tentacle = function(options){
-	console.log('Tentacle', options);
-
-	var tentacleWidth = 1749;
-	var tentacleHeight = 494;
-	var segments = 15;
-	var segmentLength = tentacleWidth / segments;
-
-	var yStr = 80;
-	var xStr = 100;
-
-	var points = [];
-	for (var i = 0; i < segments; i++){
-		points.push(new PIXI.Point(i * segmentLength, 0));
-	}
-
-	var strip = new PIXI.mesh.Rope(PIXI.Texture.fromImage('assets/imgs/tentacle.png'), points);
-	strip.x = -tentacleWidth;
-
-	var snakeContainer = new PIXI.Container();
-	snakeContainer.position.x = stageWidth + xStr;
-	snakeContainer.position.y = 300;
-	snakeContainer.scale.set(tentacleHeight / tentacleWidth);
-	stage.addChild(snakeContainer);
-
-	snakeContainer.addChild(strip);
-
-	function update(time) {
-		for (var i = 0; i < points.length; i++) {
-			points[i].y = Math.sin((i * 0.5) + time) * yStr;
-			points[i].x = i * segmentLength + Math.cos((i * 0.3) + time) * xStr;
-		}
-	}
-
-	return {
-		update: update,
-		container: snakeContainer
-	};
-};
+var bgTexture = PIXI.Texture.fromImage('assets/imgs/beach.jpg');
+var bg = new PIXI.Sprite(bgTexture);
+stage.addChild(bg);
 
 var tentacles = [];
+window.tentacles = tentacles;
 tentacles.push(new Tentacle());
+tentacles.push(new Tentacle());
+tentacles.push(new Tentacle());
+tentacles.push(new Tentacle());
+
+var leftX = -300;
+var rightX = stageWidth + 300;
+
+tentacles[0].sprite.x = rightX;
+tentacles[0].sprite.y = stageHeight * 0.6;
+
+tentacles[1].sprite.x = rightX;
+tentacles[1].sprite.y = stageHeight * 0.8;
+
+tentacles[2].sprite.scale.x *= -1;
+tentacles[2].sprite.x = leftX;
+tentacles[2].sprite.y = stageHeight * 0.6;
+
+tentacles[3].sprite.scale.x *= -1;
+tentacles[3].sprite.x = leftX;
+tentacles[3].sprite.y = stageHeight * 0.8;
+
+tentacles.forEach(function(tentacle){
+	stage.addChild(tentacle.sprite);
+});
+
+console.log(tentacles[0]);
 
 var time = 0;
 var update = function(){
@@ -61,9 +54,4 @@ var update = function(){
 update();
 
 
-
-
-
-
-
-
+})();
