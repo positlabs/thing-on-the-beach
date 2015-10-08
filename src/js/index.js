@@ -11,18 +11,25 @@ var $ = function(selector){ return document.querySelector(selector); };
 
 	var stage = new PIXI.Container();
 
+	var worldContainer = new PIXI.Container();
+	worldContainer.pivot.set(stageWidth/2, stageHeight/2);
+	worldContainer.position.set(stageWidth/2, stageHeight/2);
+	stage.addChild(worldContainer);
+
+	// TODO: higher res beach image. Should be retina 720p
 	var bgTexture = PIXI.Texture.fromImage('assets/imgs/beach.jpg');
 	var bg = new PIXI.Sprite(bgTexture);
-	bg.pivot.set(stageWidth/2, stageHeight/2);
-	bg.position.set(stageWidth/2, stageHeight/2);
-	stage.addChild(bg);
+	bg.x = -stageWidth * 0.08;
+	bg.y = -stageHeight * 0.08;
+	bg.scale.set(1.16, 1.16);
+	worldContainer.addChild(bg);
 	window.bg = bg;
 
 	var boy = new Boy();
 	boy.sprite.scale.set(0.3, 0.3);
 	boy.sprite.x = stageWidth * 0.5;
 	boy.sprite.y = stageHeight * 0.4;
-	bg.addChild(boy.sprite);
+	worldContainer.addChild(boy.sprite);
 	console.log(boy);
 
 	var tentacles = [];
@@ -59,8 +66,82 @@ var $ = function(selector){ return document.querySelector(selector); };
 	console.log(tentacles);
 
 	var time = 0;
+	var cameraShakeTimeout;
+	var camRotation = 0;
+	var camTilt = 0;
+	var camPan = 0;
+	var currentAlpha = 0;
+	var currentBeta = 0;
+	var currentGamma = 0;
+
+	var showSplash = function(){
+
+	};
+
+	var startGame = function(){
+		$('canvas').addEventListener('touchstart', goFullscreen);
+		window.addEventListener('deviceorientation', onDeviceOrientation);
+		// shakeCamera();
+	};
+
+	var goFullscreen = function(){
+		console.log('goFullscreen');
+		window.removeEventListener('touchstart', goFullscreen);
+
+		var element = document.body;
+		if(element.requestFullscreen) {
+			element.requestFullscreen();
+		} else if(element.mozRequestFullScreen) {
+			element.mozRequestFullScreen();
+		} else if(element.webkitRequestFullscreen) {
+			element.webkitRequestFullscreen();
+		} else if(element.msRequestFullscreen) {
+			element.msRequestFullscreen();
+		}
+	};
+
+	var onDeviceOrientation = function(e){
+		// console.log('alpha:', e.alpha);
+		var alphaDelta = e.alpha - currentAlpha;
+		alphaDelta = Math.min(20, alphaDelta);
+		alphaDelta = Math.max(-20, alphaDelta);
+		camRotation += alphaDelta;
+		currentAlpha = e.alpha;
+
+		var gammaDelta = e.gamma - currentGamma;
+		gammaDelta = Math.min(20, gammaDelta);
+		gammaDelta = Math.max(-20, gammaDelta);
+		camTilt += gammaDelta;
+		currentGamma = e.gamma;
+
+		var betaDelta = e.beta - currentBeta;
+		betaDelta = Math.min(20, betaDelta);
+		betaDelta = Math.max(-20, betaDelta);
+		camPan += betaDelta;
+		currentBeta = e.beta;
+	};
+
+	// var shakeCamera = function(){
+	// 	var dur = Math.random() * 3 + 1;
+	// 	cameraShakeTimeout = setTimeout(shakeCamera, dur * 1000);
+	// 	TweenLite.to(worldContainer, dur, {rotation: Math.random()*0.2 - 0.1, ease: Power2.easeInOut});
+	// };
+
+	var endGame = function(){
+		// show end screen
+		clearTimeout(cameraShakeTimeout);
+	};
+
 	var update = function(){
 		time += 0.1;
+
+		camRotation *= 0.95; // drag back to zero
+		camTilt *= 0.95;
+		camPan *= 0.95;
+		// worldContainer.rotation = camRotation / 180 * Math.PI;
+		worldContainer.x = stageWidth * 0.5 + camPan * 4;
+		worldContainer.y = stageHeight * 0.5 + -camTilt * 4;
+		// console.log(camTilt);
 
 		// hit testing!!
 		var hit = false;
@@ -78,29 +159,8 @@ var $ = function(selector){ return document.querySelector(selector); };
 		renderer.render(stage);
 		requestAnimationFrame(update);
 	};
+	
 	update();
-
-	var showSplash = function(){
-
-	};
-
-	var cameraShakeTimeout;
-
-	var startGame = function(){
-		shakeCamera();
-	};
-
-	var shakeCamera = function(){
-		var dur = Math.random() * 3 + 1;
-		cameraShakeTimeout = setTimeout(shakeCamera, dur * 1000);
-		TweenLite.to(bg, dur, {rotation: Math.random()*0.2 - 0.1, ease: Power2.easeInOut});
-	};
-
-	var endGame = function(){
-		// show end screen
-		clearTimeout(cameraShakeTimeout);
-	};
-
 	startGame();
 
 })();
