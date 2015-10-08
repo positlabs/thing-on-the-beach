@@ -3,12 +3,12 @@ var Tentacle = function(options){
 
 	var tentacleWidth = 1749;
 	var tentacleHeight = 494;
-	var segments = 15;
+	var segments = 35;
 	var segmentLength = tentacleWidth / segments;
 
 	var props = {
-		yStr: 30,
-		xStr: 50
+		yStr: 50,
+		xStr: 20
 	};
 
 	var points = [];
@@ -17,7 +17,7 @@ var Tentacle = function(options){
 	}
 
 	var strip = new PIXI.mesh.Rope(PIXI.Texture.fromImage('assets/imgs/tentacle.png'), points);
-	strip.x = -tentacleWidth;
+	// strip.x = -tentacleWidth;
 
 	var sprite = new PIXI.Container();
 	sprite.scale.set(tentacleHeight / tentacleWidth);
@@ -33,7 +33,7 @@ var Tentacle = function(options){
 	}
 
 	var attack = function(){
-		TweenMax.to(props, 2, {xStr: 180, yStr: 180, yoyo: true, repeat: 1});
+		TweenMax.to(props, 2, {xStr: 180, yStr: 220, yoyo: true, repeat: 1});
 	};
 
 	return {
