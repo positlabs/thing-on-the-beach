@@ -20,7 +20,7 @@ var Tentacle = function(options){
 	// strip.x = -tentacleWidth;
 
 	var sprite = new PIXI.Container();
-	sprite.scale.set(tentacleHeight / tentacleWidth);
+	sprite.scale.set(0.5);
 	sprite.addChild(strip);
 
 	var timeOffset = Math.random() * 10; 

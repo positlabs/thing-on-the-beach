@@ -36,31 +36,33 @@ var $ = function(selector){ return document.querySelector(selector); };
 	window.tentacles = tentacles;
 	tentacles.push(new Tentacle());
 	tentacles.push(new Tentacle());
-	// tentacles.push(new Tentacle());
-	// tentacles.push(new Tentacle());
+	tentacles.push(new Tentacle());
+	tentacles.push(new Tentacle());
 
-	var leftX = -300;
-	var rightX = stageWidth - 300;
+	var leftX = -50;
+	var rightX = stageWidth + 50;
 
 	tentacles[0].sprite.x = rightX;
-	tentacles[0].sprite.y = stageHeight * 0.6;
+	tentacles[0].sprite.y = stageHeight * 0.5;
 	tentacles[0].sprite.scale.x *= 1.2;
 	tentacles[0].sprite.scale.y *= 1.2;
 
 	tentacles[1].sprite.x = rightX;
-	tentacles[1].sprite.y = stageHeight * 0.8;
+	tentacles[1].sprite.y = stageHeight * 0.7;
 	tentacles[1].sprite.scale.y *= -1;
 
-	// tentacles[2].sprite.scale.x *= -1;
-	// tentacles[2].sprite.x = leftX;
-	// tentacles[2].sprite.y = stageHeight * 0.6;
+	tentacles[2].sprite.scale.x *= -1;
+	tentacles[2].sprite.x = leftX;
+	tentacles[2].sprite.y = stageHeight * 0.5;
 
-	// tentacles[3].sprite.scale.x *= -1;
-	// tentacles[3].sprite.x = leftX;
-	// tentacles[3].sprite.y = stageHeight * 0.8;
+	tentacles[3].sprite.scale.x *= -1;
+	tentacles[3].sprite.scale.y *= -1;
+	tentacles[3].sprite.x = leftX;
+	tentacles[3].sprite.y = stageHeight * 0.7;
 
 	tentacles.forEach(function(tentacle){
-		stage.addChild(tentacle.sprite);
+		worldContainer.addChild(tentacle.sprite);
+		// stage.addChild(tentacle.sprite);
 	});
 
 	console.log(tentacles);
@@ -73,20 +75,31 @@ var $ = function(selector){ return document.querySelector(selector); };
 	var currentAlpha = 0;
 	var currentBeta = 0;
 	var currentGamma = 0;
+	var splash = $('#splash');
+
+	$('canvas').addEventListener('touchstart', goFullscreen);
 
 	var showSplash = function(){
-
+		var img = document.createElement('img');
+		img.src = $('#splash img').src;
+		img.onload = function(){
+			TweenLite.to(splash, 2, {opacity: 1});
+			TweenLite.to(splash, 6, {y: -splash.offsetHeight + window.innerHeight, delay: 1, ease: Power2.easeInOut, onComplete: function(){
+				TweenLite.to(splash, 2, {autoAlpha: 0, onComplete: function(){
+					startGame();
+				}});
+			}});
+		};
 	};
 
 	var startGame = function(){
-		$('canvas').addEventListener('touchstart', goFullscreen);
 		window.addEventListener('deviceorientation', onDeviceOrientation);
-		// shakeCamera();
+		TweenLite.to($('canvas'), 2, {opacity: 1});
 	};
 
 	var goFullscreen = function(){
 		console.log('goFullscreen');
-		window.removeEventListener('touchstart', goFullscreen);
+		$('canvas').removeEventListener('touchstart', goFullscreen);
 
 		var element = document.body;
 		if(element.requestFullscreen) {
@@ -121,12 +134,6 @@ var $ = function(selector){ return document.querySelector(selector); };
 		currentBeta = e.beta;
 	};
 
-	// var shakeCamera = function(){
-	// 	var dur = Math.random() * 3 + 1;
-	// 	cameraShakeTimeout = setTimeout(shakeCamera, dur * 1000);
-	// 	TweenLite.to(worldContainer, dur, {rotation: Math.random()*0.2 - 0.1, ease: Power2.easeInOut});
-	// };
-
 	var endGame = function(){
 		// show end screen
 		clearTimeout(cameraShakeTimeout);
@@ -138,10 +145,8 @@ var $ = function(selector){ return document.querySelector(selector); };
 		camRotation *= 0.95; // drag back to zero
 		camTilt *= 0.95;
 		camPan *= 0.95;
-		// worldContainer.rotation = camRotation / 180 * Math.PI;
 		worldContainer.x = stageWidth * 0.5 + camPan * 4;
 		worldContainer.y = stageHeight * 0.5 + -camTilt * 4;
-		// console.log(camTilt);
 
 		// hit testing!!
 		var hit = false;
@@ -161,6 +166,7 @@ var $ = function(selector){ return document.querySelector(selector); };
 	};
 	
 	update();
+	// showSplash();
 	startGame();
 
 })();
