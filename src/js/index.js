@@ -18,6 +18,14 @@ var time = 0;
 	worldContainer.position.set(stageWidth/2, stageHeight/2);
 	stage.addChild(worldContainer);
 
+	var filter = new PIXI.filters.ColorMatrixFilter();
+	// filter.matrix[0] = 1;
+	// filter.matrix[1] = 1;
+	// filter.matrix[2] = 1;
+	// filter.matrix[3] = 1;
+	window.filter = filter;
+	worldContainer.filters = [filter];
+
 	// TODO: higher res beach image. Should be retina 720p
 	var bgTexture = PIXI.Texture.fromImage('assets/imgs/beach.jpg');
 	var bg = new PIXI.Sprite(bgTexture);
@@ -98,6 +106,14 @@ var time = 0;
 		}});
 	};
 
+	var lastX = 0;
+	var hammertime = new Hammer($('body'), {});
+	hammertime.get('pan').set({ direction: Hammer.DIRECTION_HORIZONTAL });
+	hammertime.on('pan', function(ev) {
+		// console.log(ev);
+		game.boy.sprite.x -= ev.velocityX * 12;
+	});
+
 	var endGame = function(){
 		// show end screen
 		TweenLite.to($('#game-over'), 1, {autoAlpha: 1});
@@ -112,7 +128,10 @@ var time = 0;
 		});
 	};
 	game.gameOver = endGame;
-	// endGame()
+	game.onBoyDamaged = function(){
+		console.log('onBoyDamaged');
+		TweenLite.fromTo(filter.matrix, 1, {1:1, 2:1, 3:1}, {1:0, 2:0, 3:0});
+	};
 
 	var update = function(){
 		time += 0.1;
@@ -130,8 +149,10 @@ var time = 0;
 	};
 	
 	update();
-	showSplash();
-	// startGame();
+	// showSplash();
+	startGame();
+	// endGame()
+
 
 })();
 

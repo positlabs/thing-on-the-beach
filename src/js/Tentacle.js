@@ -21,7 +21,6 @@ var Tentacle = function(options){
 		points.push(new PIXI.Point(i * segmentLength, 0));
 	}
 
-	// var randPath = Math.random() > 0.5 ? '-deformed' : '';
 	var randPath = type === 'thin' ? '-deformed' : '';
 	var strip = new PIXI.mesh.Rope(PIXI.Texture.fromImage('assets/imgs/tentacle' + randPath + '.png'), points);
 	var sprite = new PIXI.Container();

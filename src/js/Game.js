@@ -24,13 +24,10 @@ var Game = function(options){
 
 	tentacles[0].sprite.x = rightX;
 	tentacles[0].sprite.y = stageHeight * 0.5;
-	// tentacles[0].sprite.scale.x *= 1.2;
-	// tentacles[0].sprite.scale.y *= 1.2;
 
 	tentacles[1].sprite.scale.y *= -1;
 	tentacles[1].sprite.x = rightX;
 	tentacles[1].sprite.y = stageHeight * 0.7;
-
 
 	tentacles[2].sprite.scale.y *= -1;
 	tentacles[2].sprite.rotation = Math.PI;
@@ -46,17 +43,18 @@ var Game = function(options){
 	});
 
 	var attack = function(){
+		if(!game.running) return;
 
 		var tentacle = _.sample(tentacles);
 		var speed = 3 - Math.min(2.5, difficulty/20);
-		var dist = 	(Math.random() * stageWidth * 0.5) + 	// random dist
-					(stageWidth * 0.1) + 					// min dist
+		var dist = 	(Math.random() * stageWidth * 0.5) + 				// random dist
+					(stageWidth * 0.1) + 								// min dist
 					Math.min(100, Math.random() * difficulty * 10);		// difficulty modifier
 		tentacle.attack(speed, dist);
 
 		console.log('Game.attack', speed, dist);
 
-		difficulty += 2;
+		difficulty += 4;
 		setTimeout(attack, speed * 1000 * 2);
 	};
 
@@ -72,7 +70,11 @@ var Game = function(options){
 		if(hit){
 			console.log('hit!!!!!!!!!!');
 
-			boy.damage();
+			var damaged = boy.damage();
+			if(damaged){
+				game.onBoyDamaged(boy.life);
+			}
+			
 			if(boy.life === 0){
 				endGame();
 			}
@@ -86,12 +88,14 @@ var Game = function(options){
 	_.extend(this, {
 		running: false,
 		update: update,
+		boy: boy,
 		start: function(){
 			game.running = true;
 			attack();
 		},
-		// external callback method
-		gameOver: function(){}
+		// external callback methods
+		gameOver: function(){},
+		onBoyDamaged: function(){}
 	});
 
 };

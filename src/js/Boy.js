@@ -20,7 +20,7 @@ var Boy = function(options){
 			}, 1000);
 			boy.life--;
 			console.log('boy.damage');
-
+			return true;
 		}
 	});
 
