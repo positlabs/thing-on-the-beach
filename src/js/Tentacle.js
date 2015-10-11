@@ -1,14 +1,19 @@
 var Tentacle = function(options){
 	console.log('Tentacle', options);
 
-	var tentacleWidth = 1749;
-	var tentacleHeight = 494;
+	var type = Math.random() > 0.5 ? 'thin' : 'thick';
+	// var type = 'thin';
+	var attacking = false;
+
+	var tentacleWidth = type === 'thick' ? 1749 : 754 * 2;
+	var tentacleHeight = type === 'thick' ? 494 : 182 * 2;
+
 	var segments = 35;
 	var segmentLength = tentacleWidth / segments;
 
 	var props = {
-		yStr: 50,
-		xStr: 20
+		yStr: type === 'thin' ? 50 : 25,
+		xStr: type === 'thin' ? 20 : 10
 	};
 
 	var points = [];
@@ -16,11 +21,11 @@ var Tentacle = function(options){
 		points.push(new PIXI.Point(i * segmentLength, 0));
 	}
 
-	var strip = new PIXI.mesh.Rope(PIXI.Texture.fromImage('assets/imgs/tentacle.png'), points);
-	// strip.x = -tentacleWidth;
-
+	// var randPath = Math.random() > 0.5 ? '-deformed' : '';
+	var randPath = type === 'thin' ? '-deformed' : '';
+	var strip = new PIXI.mesh.Rope(PIXI.Texture.fromImage('assets/imgs/tentacle' + randPath + '.png'), points);
 	var sprite = new PIXI.Container();
-	sprite.scale.set(0.5);
+	sprite.scale.set(0.7);
 	sprite.addChild(strip);
 
 	var timeOffset = Math.random() * 10; 
@@ -32,8 +37,19 @@ var Tentacle = function(options){
 		}
 	}
 
-	var attack = function(){
-		TweenMax.to(props, 2, {xStr: 180, yStr: 220, yoyo: true, repeat: 1});
+	var attack = function(speed, dist){
+		if(attacking) return false;
+		if(speed === undefined) speed = 2;
+		attacking = true;
+
+		var x = dist;
+		if(sprite.x > stageWidth/2) x = stageWidth - dist;
+		
+		TweenMax.to(sprite, speed, {x: x, yoyo: true, repeat: 1});
+		TweenMax.to(props, speed, {xStr: '*=4', yStr: '*=4', yoyo: true, repeat: 1});
+		setTimeout(function(){
+			attacking = false;
+		}, speed * 2 + 100);
 	};
 
 	return {
