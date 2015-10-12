@@ -104,6 +104,8 @@ var time = 0;
 		TweenLite.to($('canvas'), 2, {opacity: 1, onComplete: function(){
 			game.start();
 		}});
+		TweenMax.to($('#instructions'), 2, {autoAlpha: 1, yoyo: true, repeat: 1});
+
 	};
 
 	var lastX = 0;

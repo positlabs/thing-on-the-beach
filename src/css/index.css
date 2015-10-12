@@ -35,6 +35,18 @@ canvas {
 	width: 100%;
 }
 
+#instructions {
+	position: absolute;
+	z-index: 100;
+	top: 40px;
+	width: 100%;
+	text-align: center;
+	opacity: 0; visibility: hidden;
+	color: white;
+	font-weight: bold;
+	letter-spacing: 1px;
+}
+
 #game-over {
 	position: absolute;
 	top: 0; left: 0;
