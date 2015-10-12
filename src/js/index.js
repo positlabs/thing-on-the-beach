@@ -149,17 +149,10 @@ var time = 0;
 	};
 	
 	update();
-	// showSplash();
-	startGame();
+	showSplash();
+	// startGame();
 	// endGame()
 
-
 })();
-
-
-
-
-
-
 
 
