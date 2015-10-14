@@ -27,11 +27,11 @@ var time = 0;
 	worldContainer.filters = [filter];
 
 	// TODO: higher res beach image. Should be retina 720p
-	var bgTexture = PIXI.Texture.fromImage('assets/imgs/beach.jpg');
+	var bgTexture = PIXI.Texture.fromImage('assets/imgs/beach2.jpg');
 	var bg = new PIXI.Sprite(bgTexture);
-	bg.x = -stageWidth * 0.08;
-	bg.y = -stageHeight * 0.08;
-	bg.scale.set(1.16, 1.16);
+	bg.x = stageWidth/2 - 800;
+	bg.y = stageHeight/2 - 600;
+	// bg.scale.set(1.16, 1.16);
 	worldContainer.addChild(bg);
 	window.bg = bg;
 
