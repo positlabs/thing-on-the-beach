@@ -19,21 +19,23 @@ var time = 0;
 	stage.addChild(worldContainer);
 
 	var filter = new PIXI.filters.ColorMatrixFilter();
-	// filter.matrix[0] = 1;
-	// filter.matrix[1] = 1;
-	// filter.matrix[2] = 1;
-	// filter.matrix[3] = 1;
 	window.filter = filter;
 	worldContainer.filters = [filter];
 
-	// TODO: higher res beach image. Should be retina 720p
 	var bgTexture = PIXI.Texture.fromImage('assets/imgs/beach2.jpg');
 	var bg = new PIXI.Sprite(bgTexture);
 	bg.x = stageWidth/2 - 800;
 	bg.y = stageHeight/2 - 600;
-	// bg.scale.set(1.16, 1.16);
 	worldContainer.addChild(bg);
 	window.bg = bg;
+
+	// vignette
+	var vignetteTex = PIXI.Texture.fromImage('assets/imgs/vignette.png');
+	var vignette = new PIXI.Sprite(vignetteTex);
+	vignette.blendMode = PIXI.BLEND_MODES.MULTIPLY;
+	vignette.alpha = 0.75;
+	stage.addChild(vignette);
+	window.vignette = vignette;
 
 	var cameraShakeTimeout;
 	var camRotation = 0;
@@ -105,7 +107,7 @@ var time = 0;
 			game.start();
 		}});
 		TweenMax.to($('#instructions'), 2, {autoAlpha: 1, yoyo: true, repeat: 1});
-
+		update();
 	};
 
 	var lastX = 0;
@@ -113,7 +115,7 @@ var time = 0;
 	hammertime.get('pan').set({ direction: Hammer.DIRECTION_HORIZONTAL });
 	hammertime.on('pan', function(ev) {
 		// console.log(ev);
-		game.boy.sprite.x -= ev.velocityX * 12;
+		game.boy.sprite.x -= ev.velocityX * 30;
 	});
 
 	var endGame = function(){
@@ -128,6 +130,7 @@ var time = 0;
 		$('.replay-btn').addEventListener('click', function(){
 			window.location.reload();
 		});
+		ended = true;
 	};
 	game.gameOver = endGame;
 	game.onBoyDamaged = function(){
@@ -135,7 +138,9 @@ var time = 0;
 		TweenLite.fromTo(filter.matrix, 1, {1:1, 2:1, 3:1}, {1:0, 2:0, 3:0});
 	};
 
+	var ended = false;
 	var update = function(){
+		if(ended) return;
 		time += 0.1;
 
 		camRotation *= 0.95; // drag back to zero
@@ -150,7 +155,7 @@ var time = 0;
 		requestAnimationFrame(update);
 	};
 	
-	update();
+	// update();
 	showSplash();
 	// startGame();
 	// endGame()

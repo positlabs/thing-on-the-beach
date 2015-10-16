@@ -13,8 +13,6 @@ var Boy = function(options){
 			if(invincible) return;
 			invincible = true;
 			
-			//TODO some damage effect
-
 			setTimeout(function(){
 				invincible = false;
 			}, 1000);
