@@ -1,6 +1,7 @@
 
 // globals
 var $ = function(selector){ return document.querySelector(selector); };
+var $$ = function(selector){ return document.querySelectorAll(selector); };
 var stageWidth = 1280;
 var stageHeight = 720;
 var time = 0;
@@ -131,6 +132,15 @@ var time = 0;
 			window.location.reload();
 		});
 		ended = true;
+		var currentStoryboardIndex = 0;
+		var imgs = $$('.storyboards img');
+
+		setInterval(function(){
+			TweenLite.to(imgs[currentStoryboardIndex], 1, {autoAlpha: 0});
+			currentStoryboardIndex ++;
+			currentStoryboardIndex = currentStoryboardIndex % 10;
+			TweenLite.to(imgs[currentStoryboardIndex], 1, {autoAlpha: 1});
+		}, 2500);
 	};
 	game.gameOver = endGame;
 	game.onBoyDamaged = function(){
@@ -155,10 +165,9 @@ var time = 0;
 		requestAnimationFrame(update);
 	};
 	
-	// update();
-	showSplash();
-	// startGame();
-	// endGame()
+	// showSplash();
+	// startGame()
+	endGame()
 
 })();
 

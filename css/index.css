@@ -61,6 +61,14 @@ canvas {
 	padding: 40px;
 	line-height: 1.5;
 }
+
+#game-over .wrapper {
+	max-width: 600px;
+	position: relative;
+	margin: 0 auto;
+}
+
+
 #game-over .buttons {
 	text-align: center;
 }
@@ -71,4 +79,22 @@ canvas {
 	padding: 5px 10px;
 	cursor: pointer;
 	color: red;
+	margin-bottom: 15px;
+}
+
+#game-over .about {
+}
+
+#game-over .storyboards {
+	position: relative;
+}
+
+#game-over .storyboards img {
+	position: absolute;
+	top: 0; left: 0;
+	width: 100%;
+	visibility: hidden;
+}
+#game-over .storyboards img:first-child {
+	visibility: visible;
 }
