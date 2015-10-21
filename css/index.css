@@ -22,6 +22,7 @@ canvas {
 	width: 100%;
 	opacity: 0;
 	cursor: ew-resize;
+	z-index: 100;
 }
 
 #splash {
@@ -87,6 +88,7 @@ canvas {
 
 #game-over .storyboards {
 	position: relative;
+	pointer-events: none;
 }
 
 #game-over .storyboards img {

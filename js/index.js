@@ -121,6 +121,7 @@ var time = 0;
 
 	var endGame = function(){
 		// show end screen
+		TweenLite.to($('canvas'), 1, {autoAlpha: 0});
 		TweenLite.to($('#game-over'), 1, {autoAlpha: 1});
 
 		$('.fb-share-btn').addEventListener('click', function(){
@@ -164,10 +165,14 @@ var time = 0;
 		renderer.render(stage);
 		requestAnimationFrame(update);
 	};
+
+	if(window.location.search.match('thanks') === null){
+		$('.storyboards').style.display = 'none';
+	}
 	
-	// showSplash();
+	showSplash();
 	// startGame()
-	endGame()
+	// endGame();
 
 })();
 
