@@ -172,7 +172,7 @@ var time = 0;
 		$('.storyboards').style.display = 'none';
 	}
 	
-	if(window.location.hash.match() !== null){
+	if(window.location.hash.match('replay') !== null){
 		startGame();
 	}else{
 		showSplash();
