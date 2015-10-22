@@ -38,7 +38,7 @@ canvas {
 
 #instructions {
 	position: absolute;
-	z-index: 100;
+	z-index: 101;
 	top: 40px;
 	width: 100%;
 	text-align: center;

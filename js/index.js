@@ -107,7 +107,8 @@ var time = 0;
 		TweenLite.to($('canvas'), 2, {opacity: 1, onComplete: function(){
 			game.start();
 		}});
-		TweenMax.to($('#instructions'), 2, {autoAlpha: 1, yoyo: true, repeat: 1});
+		TweenMax.to($('#instructions'), 2, {autoAlpha: 1});
+		TweenMax.to($('#instructions'), 1, {autoAlpha: 0, delay: 6});
 		update();
 	};
 
@@ -130,6 +131,7 @@ var time = 0;
 			window.open(url, '_blank', 'width=600, height=400');
 		});
 		$('.replay-btn').addEventListener('click', function(){
+			window.location.hash = 'replay';
 			window.location.reload();
 		});
 		ended = true;
@@ -170,8 +172,11 @@ var time = 0;
 		$('.storyboards').style.display = 'none';
 	}
 	
-	showSplash();
-	// startGame()
+	if(window.location.hash.match() !== null){
+		startGame();
+	}else{
+		showSplash();
+	}
 	// endGame();
 
 })();

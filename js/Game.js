@@ -46,10 +46,10 @@ var Game = function(options){
 		if(!game.running) return;
 
 		var tentacle = _.sample(tentacles);
-		var speed = 3 - Math.min(2.5, difficulty/20);
+		var speed = 2.5 - Math.min(2, difficulty/30);
 		var dist = 	(Math.random() * stageWidth * 0.5) + 				// random dist
 					(stageWidth * 0.1) + 								// min dist
-					Math.min(100, Math.random() * difficulty * 10);		// difficulty modifier
+					Math.min(200, Math.random() * difficulty * 10);		// difficulty modifier
 		tentacle.attack(speed, dist);
 
 		console.log('Game.attack', speed, dist);
