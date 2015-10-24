@@ -36,10 +36,29 @@ canvas {
 	width: 100%;
 }
 
+#game {
+	position: absolute;
+	width: 100%; height: 100%;
+}
+
+#game .timer {
+	position: absolute;
+	left: 50%;
+	top: 20px;
+	z-index: 102;
+	font-size: 18px;
+	color: white;
+	text-shadow: 0 0 3px black;
+	-webkit-transform: translateX(-50%);
+	-moz-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	transform: translateX(-50%);
+}
+
 #instructions {
 	position: absolute;
 	z-index: 101;
-	top: 40px;
+	top: 60px;
 	width: 100%;
 	text-align: center;
 	opacity: 0; visibility: hidden;

@@ -9,8 +9,10 @@ var time = 0;
 
 (function(){
 
+	var timer;
+
 	var renderer = PIXI.autoDetectRenderer(stageWidth, stageHeight);
-	document.body.appendChild(renderer.view);
+	$('#game').appendChild(renderer.view);
 
 	var stage = new PIXI.Container();
 
@@ -109,6 +111,8 @@ var time = 0;
 		}});
 		TweenMax.to($('#instructions'), 2, {autoAlpha: 1});
 		TweenMax.to($('#instructions'), 1, {autoAlpha: 0, delay: 6});
+		timer = new Timer($('#game .timer'));
+		timer.start();
 		update();
 	};
 
@@ -121,8 +125,11 @@ var time = 0;
 	});
 
 	var endGame = function(){
+
+		timer.stop();
+
 		// show end screen
-		TweenLite.to($('canvas'), 1, {autoAlpha: 0});
+		TweenLite.to($('#game'), 1, {autoAlpha: 0});
 		TweenLite.to($('#game-over'), 1, {autoAlpha: 1});
 
 		$('.fb-share-btn').addEventListener('click', function(){
